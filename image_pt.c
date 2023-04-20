@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include "image.h"
+#include <pthread.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -56,10 +57,7 @@ uint8_t getPixelValue(Image* srcImage,int x,int y,int bit,Matrix algorithm){
 //            destImage: A pointer to a  pre-allocated (including space for the pixel array) structure to receive the convoluted image.  It should be the same size as srcImage
 //            algorithm: The kernel matrix to use for the convolution
 //Returns: Nothing
-void convolute_thread(Image* srcImage,Image* destImage,Matrix algorithm, void* rank){
-    long my_rank = (long) rank;
-
-
+void convolute(Image* srcImage,Image* destImage,Matrix algorithm){
 	int row,pix,bit,span;
     span=srcImage->bpp*srcImage->bpp;
     for (row=0;row<srcImage->height;row++){
@@ -70,7 +68,15 @@ void convolute_thread(Image* srcImage,Image* destImage,Matrix algorithm, void* r
         }
     }
 }
+/*
+void* pthread_func(void* rank){
+	int thread_count;
+	long thread;
+	pthread_t* thread_handles;
+	thread_count
 
+}
+*/
 //Usage: Prints usage information for the program
 //Returns: -1
 int Usage(){
@@ -114,8 +120,20 @@ int main(int argc,char** argv){
     destImage.height=srcImage.height;
     destImage.width=srcImage.width;
     destImage.data=malloc(sizeof(uint8_t)*destImage.width*destImage.bpp*destImage.height);
-    convolute_thread(&srcImage,&destImage,algorithms[type]);
-    stbi_write_png("output.png",destImage.width,destImage.height,destImage.bpp,destImage.data,destImage.bpp*destImage.width);
+
+	//convolute(&srcImage,&destImage,algorithms[type]);
+	int thread_count;
+	long thread;
+	pthread_t* thread_handles;
+	thread_count = strtol(argv[3],NULL,10);
+	thread_handles=(pthread_t*)malloc(thread_count*sizeof(pthread_t));
+	for (thread=0;thread<thread_count;thread++)
+		pthread_create(&thread_handles[thread],NULL,convolute,NULL);
+	for (thread=0;thread<thread_count;thread++)
+		pthread_join(thread_handles[thread], NULL);
+	free(thread_handles);
+
+	stbi_write_png("output.png",destImage.width,destImage.height,destImage.bpp,destImage.data,destImage.bpp*destImage.width);
     stbi_image_free(srcImage.data);
     
     free(destImage.data);

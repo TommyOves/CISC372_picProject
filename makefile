@@ -1,6 +1,10 @@
-# gcc –g –o hello_thread hello_thread.c -lpthread
 
-image:image_pt.c image.h
-	gcc -g image_pt.c -o image -lm
+#imagept:image_pt.c image.h
+#	gcc –g –o image_pt.c image_pt -lpthread
+#clean:
+#	rm -f imagept output_pt.png
+
+imageomp:image_omp.c image.h
+	gcc −g −Wall −fopenmp −o imageomp image_omp.c
 clean:
-	rm -f image output.png
+	rm -f imageomp output_omp.png
