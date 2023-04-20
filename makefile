@@ -1,10 +1,12 @@
+omp:image_omp.c image.h
+	gcc -fopenmp -g image_omp.c -o image_omp -lm
 
-#imagept:image_pt.c image.h
-#	gcc –g –o image_pt.c image_pt -lpthread
-#clean:
-#	rm -f imagept output_pt.png
+pthreads:image_pt.c image.h
+	gcc -g image_pt.c -o imagept -lm -pthread
 
-imageomp:image_omp.c image.h
-	gcc −g −Wall −fopenmp −o imageomp image_omp.c
+#darwin: image-pthread.c image-pthread.h image-openMP.c image.h
+#	gcc -g image-pthread.c -o image_pthread -lm -lpthread -std=c99
+#	gcc -g image_openMP.c -o image-openMP -lm -fopenmp -std=c99
+
 clean:
-	rm -f imageomp output_omp.png
+	rm -f output.png image_omp output_omp.png image_pt output_pt.png

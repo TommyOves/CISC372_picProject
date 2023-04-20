@@ -113,9 +113,7 @@ int main(int argc,char** argv){
     destImage.width=srcImage.width;
     destImage.data=malloc(sizeof(uint8_t)*destImage.width*destImage.bpp*destImage.height);
     
-	int thread_count = strtol(argv[3], NULL, 10);
-
-#	pragma omp parallel num_threads(thread_count)
+#	pragma omp parallel
 	convolute(&srcImage,&destImage,algorithms[type]);
 
     stbi_write_png("output_omp.png",destImage.width,destImage.height,destImage.bpp,destImage.data,destImage.bpp*destImage.width);

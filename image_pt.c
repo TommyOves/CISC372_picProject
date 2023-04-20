@@ -68,15 +68,11 @@ void convolute(Image* srcImage,Image* destImage,Matrix algorithm){
         }
     }
 }
-/*
-void* pthread_func(void* rank){
-	int thread_count;
-	long thread;
-	pthread_t* thread_handles;
-	thread_count
 
+void helper(Image* srcImage,Image* destImage,Matrix algorithm){
+	void
 }
-*/
+
 //Usage: Prints usage information for the program
 //Returns: -1
 int Usage(){
@@ -120,20 +116,13 @@ int main(int argc,char** argv){
     destImage.height=srcImage.height;
     destImage.width=srcImage.width;
     destImage.data=malloc(sizeof(uint8_t)*destImage.width*destImage.bpp*destImage.height);
-
+		
+	pthread_t thread;
+	pthread_create(&thread, NULL, convolute, NULL);
+	pthread_join(thread, NULL);
 	//convolute(&srcImage,&destImage,algorithms[type]);
-	int thread_count;
-	long thread;
-	pthread_t* thread_handles;
-	thread_count = strtol(argv[3],NULL,10);
-	thread_handles=(pthread_t*)malloc(thread_count*sizeof(pthread_t));
-	for (thread=0;thread<thread_count;thread++)
-		pthread_create(&thread_handles[thread],NULL,convolute,NULL);
-	for (thread=0;thread<thread_count;thread++)
-		pthread_join(thread_handles[thread], NULL);
-	free(thread_handles);
 
-	stbi_write_png("output.png",destImage.width,destImage.height,destImage.bpp,destImage.data,destImage.bpp*destImage.width);
+	stbi_write_png("output_pt.png",destImage.width,destImage.height,destImage.bpp,destImage.data,destImage.bpp*destImage.width);
     stbi_image_free(srcImage.data);
     
     free(destImage.data);
