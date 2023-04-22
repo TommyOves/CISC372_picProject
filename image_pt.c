@@ -144,7 +144,7 @@ int main(int argc,char** argv){
     double t1,t2;
 	// long t1, t2;
 	// int num_threads = 16;
-
+	t1 = time(NULL);
     stbi_set_flip_vertically_on_load(0); 
     if (argc!=3) return Usage();
     char* fileName=argv[1];
@@ -159,7 +159,6 @@ int main(int argc,char** argv){
         printf("Error loading file %s.\n",fileName);
         return -1;
     }
-    t1 = time(NULL);
     destImage.bpp=srcImage.bpp;
     destImage.height=srcImage.height;
     destImage.width=srcImage.width;
