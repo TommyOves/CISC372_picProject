@@ -1,0 +1,6 @@
+Output: 
+
+[ovest@login01.darwin CISC372_picProject]$ ./imagept pic1.jpg edge
+Took 1.000000 seconds
+[ovest@login01.darwin CISC372_picProject]$ ./imageomp pic1.jpg edge
+Took 9 seconds
